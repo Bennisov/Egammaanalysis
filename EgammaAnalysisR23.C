@@ -449,7 +449,7 @@ double weight_mc = 1.;
             {
                for (int j = 0; j<pix_track_charge->size(); j++)
                {
-                  if(pix_track_hits->at(j) > 3 and electron_charge->at(i)*pix_track_charge->at(j) < 0 and TMath::Abs(pix_track_eta->at(j)) < 2.5 )
+                  if((pix_track_hits->at(j) > 3) and ((electron_charge->at(i)*pix_track_charge->at(j)) < 0) and (TMath::Abs(pix_track_eta->at(j)) < 2.5 ))
                   {
                      TLorentzVector tag,probe;
                      tag.SetPtEtaPhiM(electron_pt -> at(i), electron_eta -> at(i), electron_phi->at(i),0.511);
@@ -497,15 +497,14 @@ double weight_mc = 1.;
                               ind = k;
                            }
                         }
-                        if(dR_min < 0.002)
+                        if(dR_min < 0.02)
                         {
                            if(isMC)
                            {
                               TLorentzVector rec;
                               rec.SetPtEtaPhiM(electron_pt->at(ind), electron_eta->at(ind), electron_phi->at(ind), 0.511);
-                              Double_t weight1 = L1TriggerWeight2023(probe.E(), rec.E());
-                              h_rec_mc_pt -> Fill(probe.Pt(), weight1);
-                              h_rec_mc_eta -> Fill(probe.Eta(), weight1);
+                              h_rec_mc_pt -> Fill(probe.Pt(), weight);
+                              h_rec_mc_eta -> Fill(probe.Eta(), weight);
                            }
                            else
                            {

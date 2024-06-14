@@ -15,7 +15,7 @@ void macro2() {
         return;
     }
 
-    auto calculateEfficiency = [](TH1F* num, TH1F* den) {
+    auto calculateEfficiencyWilson = [](TH1F* num, TH1F* den) {
         int nBins = num->GetNbinsX();
         std::vector<double> eff(nBins), eff_err(nBins);
         for (int i = 1; i <= nBins; ++i) {
@@ -26,16 +26,24 @@ void macro2() {
                 eff_err[i-1] = 0;
             } else {
                 eff[i-1] = n / d;
-                eff_err[i-1] = sqrt(eff[i-1] * (1 - eff[i-1]) / d);
+                // Wilson score interval
+                double z = 0.84; // 60% confidence interval
+                double phat = eff[i-1];
+                double denominator = 1 + z*z/d;
+                double center = (phat + z*z/(2*d)) / denominator;
+                double margin = z * sqrt((phat*(1-phat) + z*z/(4*d)) / d) / denominator;
+                double lowerBound = center - margin;
+                double upperBound = center + margin;
+                eff_err[i-1] = std::max(upperBound - eff[i-1], eff[i-1] - lowerBound); // Symmetric error approximation
             }
         }
         return std::make_pair(eff, eff_err);
     };
 
-    auto mc_eta_eff = calculateEfficiency(mc_eta_r, mc_eta_p);
-    auto mc_pt_eff = calculateEfficiency(mc_pt_r, mc_pt_p);
-    auto data_eta_eff = calculateEfficiency(data_eta_r, data_eta_p);
-    auto data_pt_eff = calculateEfficiency(data_pt_r, data_pt_p);
+    auto mc_eta_eff = calculateEfficiencyWilson(mc_eta_r, mc_eta_p);
+    auto mc_pt_eff = calculateEfficiencyWilson(mc_pt_r, mc_pt_p);
+    auto data_eta_eff = calculateEfficiencyWilson(data_eta_r, data_eta_p);
+    auto data_pt_eff = calculateEfficiencyWilson(data_pt_r, data_pt_p);
 
     auto createTGraphErrors = [](TH1F* hist, const std::vector<double>& eff, const std::vector<double>& eff_err) {
         int nBins = hist->GetNbinsX();
@@ -46,6 +54,7 @@ void macro2() {
             graph->SetPoint(i-1, x, eff[i-1]);
             graph->SetPointError(i-1, ex, eff_err[i-1]);
         }
+        graph->GetYaxis()->SetRangeUser(0., 1.); // Set Y-axis range to [0, 1]
         return graph;
     };
 
