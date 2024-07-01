@@ -27,7 +27,7 @@ void macro2() {
             } else {
                 eff[i-1] = n / d;
                 // Wilson score interval
-                double z = 0.84; // 60% confidence interval
+                double z = 1.28; // 90% confidence interval
                 double phat = eff[i-1];
                 double denominator = 1 + z*z/d;
                 double center = (phat + z*z/(2*d)) / denominator;
@@ -85,7 +85,7 @@ void macro2() {
     TGraphErrors* gr_pt_ratio = createTGraphErrors(mc_pt_r, pt_ratio.first, pt_ratio.second);
 
     // Create canvases for plotting
-    TCanvas *canvas1 = new TCanvas("c1", "", 800, 800);
+    TCanvas *canvas1 = new TCanvas("c1", "Nominal data eff", 800, 800);
     canvas1->Divide(1, 2);
 
     // Plot eta efficiency
@@ -94,6 +94,7 @@ void macro2() {
     gr_mc_eta_eff->SetMarkerStyle(20);
     gr_mc_eta_eff->SetMarkerColor(kBlue);
     gr_mc_eta_eff->SetLineColor(kBlue);
+    gr_mc_eta_eff->SetTitle("Eta eff;S;Eff");
     gr_mc_eta_eff->Draw("AP");
     gr_data_eta_eff->SetMarkerStyle(21);
     gr_data_eta_eff->SetMarkerColor(kRed);
@@ -122,7 +123,7 @@ void macro2() {
     canvas1->Update();
     canvas1->SaveAs("eff_eta.png");
 
-    TCanvas *canvas2 = new TCanvas("c2", "", 800, 800);
+    TCanvas *canvas2 = new TCanvas("c2", "Nominal data eff", 800, 800);
     canvas2->Divide(1, 2);
 
     // Plot pt efficiency

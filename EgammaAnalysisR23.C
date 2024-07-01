@@ -231,6 +231,10 @@ auto *h_rec_data_pt = new TH1F("d_rec_data_pt", ";PixTrk P_T;Events", 11, bins_p
 auto *h_rec_data_eta = new TH1F("d_rec_data_eta", ";PixTrk Eta;Events", 26, -2.6, 2.6);
 
 auto *h_rec_eff_data_pt = new TH1F("d_rec_eff_data_pt",";PixTrk P_T;Eff", 11, bins_pt);
+auto *h_rec_eff_data_pt_vl = new TH1F("d_rec_eff_data_pt_vl",";PixTrk P_T;Eff", 11, bins_pt);
+auto *h_rec_eff_data_pt_lo = new TH1F("d_rec_eff_data_pt_lo",";PixTrk P_T;Eff", 11, bins_pt);
+auto *h_rec_eff_data_pt_me = new TH1F("d_rec_eff_data_pt_me",";PixTrk P_T;Eff", 11, bins_pt);
+auto *h_rec_eff_data_pt_ti = new TH1F("d_rec_eff_data_pt_ti",";PixTrk P_T;Eff", 11, bins_pt);
 auto *h_rec_eff_data_eta = new TH1F("d_rec_eff_data_eta",";PixTrk Eta;Eff", 26, -2.6, 2.6);
 
 auto *h_rec_mc_pt = new TH1F("d_rec_mc_pt", ";PixTrk P_T;Events", 11, bins_pt);
@@ -508,6 +512,10 @@ double weight_mc = 1.;
                            }
                            else
                            {
+                              if(electron_is_LHVeryLoose) h_rec_eff_data_pt_vl -> Fill(probe.Pt());
+                              if(electron_is_LHLoose) h_rec_eff_data_pt_lo -> Fill(probe.Pt());
+                              if(electron_is_LHMedium) h_rec_eff_data_pt_me -> Fill(probe.Pt());
+                              if(electron_is_LHTight) h_rec_eff_data_pt_ti -> Fill(probe.Pt());
                               h_rec_data_pt -> Fill(probe.Pt());
                               h_rec_data_eta -> Fill(probe.Eta());
                            }
@@ -629,6 +637,10 @@ double weight_mc = 1.;
    h_rec_eff_data_eta -> Divide(h_rec_data_eta, h_probe_data_eta, 1. ,1., "b");
    h_rec_eff_mc_pt -> Divide(h_rec_mc_pt, h_probe_mc_pt, 1. ,1., "b");
    h_rec_eff_mc_eta -> Divide(h_rec_mc_eta, h_probe_mc_eta, 1. ,1., "b");
+   h_rec_eff_data_pt_vl -> Divide(h_rec_eff_data_pt_vl, h_probe_data_pt, 1., 1., "b");
+   h_rec_eff_data_pt_lo -> Divide(h_rec_eff_data_pt_lo, h_probe_data_pt, 1., 1., "b");
+   h_rec_eff_data_pt_me -> Divide(h_rec_eff_data_pt_me, h_probe_data_pt, 1., 1., "b");
+   h_rec_eff_data_pt_ti -> Divide(h_rec_eff_data_pt_ti, h_probe_data_pt, 1., 1., "b");
    outputFile->Write();
    outputFile->Close();
 }

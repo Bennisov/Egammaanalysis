@@ -953,7 +953,7 @@ EgammaAnalysisR23::EgammaAnalysisR23(TTree *tree) : fChain(0)
       //chain->Add("R3/data_ntuple-2023-hirun-v4.root");
       //MC simulation
       chain->Add("mc_data.root");
-      chain->Add("datav2.root");
+      chain->Add("datav3(docelowe).root");
       //chain->Add("run461321-MinBias-v1.root/G2TauTree");
       tree = chain;
 #endif // SINGLE_TREE
