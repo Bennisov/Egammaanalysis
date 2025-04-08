@@ -14,10 +14,7 @@
 
 // Header file for the classes stored in the TTree if any.
 #include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
+
 
 class EgammaAnalysisR23 {
 public :
@@ -26,13 +23,15 @@ public :
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
    //igb: my functions
-   virtual bool SelectTruthElectron (float, float);
-   virtual bool SelectRecoElectron (float, float);
-   virtual double DeltaPhi (double, double);
-   virtual double  effErf (double, double, double);
+   virtual bool SelectTruthElectron(float, float);
+   virtual bool SelectRecoElectron(float, float);
+   virtual double DeltaPhi(double, double);
+   virtual double effErf(double, double, double, double);
    virtual double L1TriggerWeight(double, double);
-   virtual double L1TriggerWeight2023(double, double);
-   virtual bool FitToTruth(float,float,float,vector<float>*,vector<float>*,vector<float>*, bool, bool);
+   virtual double L1TriggerWeightUp(double, double);
+   virtual double L1TriggerWeightDown(double, double);
+
+   virtual bool FitToTruth(bool eg, float truth_pt, float truth_eta, float truth_phi, vector<float> *fit_pt, vector<float> *fit_eta, vector<float> *fit_phi);
 
    virtual bool ESel(float,float);
    //std::vector<TString> inputFiles = "input-file.txt";
@@ -952,8 +951,8 @@ EgammaAnalysisR23::EgammaAnalysisR23(TTree *tree) : fChain(0)
       //2023 HI data
       //chain->Add("R3/data_ntuple-2023-hirun-v4.root");
       //MC simulation
-      chain->Add("mc_data.root");
-      chain->Add("datav3(docelowe).root");
+      chain->Add("MC/result.root");
+      chain->Add("data_new_gen.root");
       //chain->Add("run461321-MinBias-v1.root/G2TauTree");
       tree = chain;
 #endif // SINGLE_TREE
